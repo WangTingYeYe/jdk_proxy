@@ -4,7 +4,10 @@ import com.wanting.handle.logHandle;
 import com.wanting.service.TestService;
 import com.wanting.service.impl.TestServiceImpl;
 import com.wanting.strengthen_service.StrengthenTestService;
+import sun.misc.ProxyGenerator;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
@@ -26,10 +29,23 @@ public class App {
 //
 //        testService.selectData();
 
-        TestService testService = (TestService) Proxy.newProxyInstance(App.class.getClassLoader(),
-                new Class[]{TestService.class},
-                new logHandle(target));
+//        TestService testService = (TestService) Proxy.newProxyInstance(App.class.getClassLoader(),
+//                new Class[]{TestService.class},
+//                new logHandle(target));
+//
+//        testService.selectData();
 
-        testService.selectData();
+
+        byte[] bytes = ProxyGenerator.generateProxyClass(
+                "com.micheal.Proxy$67", new Class[]{TestService.class}, 11);
+
+        try {
+            FileOutputStream fileOutputStream  = new FileOutputStream("d:\\com\\micheal\\Proxy$67.class");
+            fileOutputStream.write(bytes);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
