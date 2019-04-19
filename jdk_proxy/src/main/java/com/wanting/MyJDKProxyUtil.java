@@ -6,6 +6,8 @@ import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -20,7 +22,7 @@ public class MyJDKProxyUtil {
          * <p>
          * 3、class 加载成类
          */
-        public static void newInstance(Object target) {
+        public static Object newInstance(Object target) {
 
 
 
@@ -78,10 +80,10 @@ public class MyJDKProxyUtil {
 
 //        System.out.println(allMethod);
             String proxyJava =  packageName+importList+oneLine+propertie+construstor+allMethod+"}";
-            System.out.println(proxyJava);
+//            System.out.println(proxyJava);
 
             // 写出成java 文件
-            File file = new File("d:\\com\\micheal\\Proxy$66.java");
+            File file = new File("D:\\com\\micheal\\Proxy$66.java");
             try {
                 FileWriter fw = new FileWriter(file);
                 fw.write(proxyJava);
@@ -100,12 +102,15 @@ public class MyJDKProxyUtil {
                 URLClassLoader urlClassLoader = new URLClassLoader(urls);
                 Class clazz = urlClassLoader.loadClass("com.micheal.Proxy$66");
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+                //获取构造器
+                Constructor constructor = clazz.getConstructor(targetClass);
+
+                Object newInstance = constructor.newInstance(target);
+                return newInstance;
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
+            return null;
         }
 }

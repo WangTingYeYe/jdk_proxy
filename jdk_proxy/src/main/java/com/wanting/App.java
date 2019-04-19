@@ -18,6 +18,8 @@ public class App {
 //        testService.selectData();
 
 
-        MyJDKProxyUtil.newInstance(target);
+        TestService testService = (TestService) MyJDKProxyUtil.newInstance(target);
+
+        testService.selectData();
     }
 }
