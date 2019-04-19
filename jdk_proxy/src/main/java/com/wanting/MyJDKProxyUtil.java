@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-public class ImitateJDKProxyUtil {
+public class MyJDKProxyUtil {
         /**
          * java 编码 过程
          * <p>
