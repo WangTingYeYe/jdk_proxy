@@ -1,11 +1,16 @@
 package com.wanting;
 
+import javax.tools.JavaCompiler;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-public class ImitateJDKProxyUtil {
+public class MyJDKProxyUtil {
         /**
          * java 编码 过程
          * <p>
@@ -82,8 +87,22 @@ public class ImitateJDKProxyUtil {
                 fw.write(proxyJava);
                 fw.flush();
                 fw.close();
+                JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+
+                StandardJavaFileManager fileMgr = compiler.getStandardFileManager(null, null, null);
+                Iterable units = fileMgr.getJavaFileObjects(file);
+
+                JavaCompiler.CompilationTask t = compiler.getTask(null, fileMgr, null, null, null, units);
+                t.call();
+                fileMgr.close();
+
+                URL[] urls = new URL[]{new URL("file:D:\\\\")};
+                URLClassLoader urlClassLoader = new URLClassLoader(urls);
+                Class clazz = urlClassLoader.loadClass("com.micheal.Proxy$66");
 
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
