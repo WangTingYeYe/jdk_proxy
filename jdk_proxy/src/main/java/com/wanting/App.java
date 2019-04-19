@@ -14,7 +14,10 @@ public class App {
         TestService target =  new TestServiceImpl();
 
         //用 "代理"对象来增强其功能
-        TestService testService = new StrengthenTestService(target);
-        testService.selectData();
+//        TestService testService = new StrengthenTestService(target);
+//        testService.selectData();
+
+
+        ImitateJDKProxyUtil.newInstance(target);
     }
 }
